@@ -1,15 +1,15 @@
-import { currentUser } from "@clerk/nextjs/server";
 
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 import { getUserByClerkId } from "@/actions/user.action";
 import Link from "next/link";
 
 import { LinkIcon, MapPinIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./button";
+import { currentUser } from "@clerk/nextjs/server";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 async function Sidebar() {
   const authUser = await currentUser();
@@ -27,11 +27,8 @@ async function Sidebar() {
               href={`/profile/${user.username}`}
               className="flex flex-col items-center justify-center"
             >
-              <Avatar className="w-20 h-20">
-                <AvatarImage
-                  src={user.image || "/avatar.png"}
-                  className="rounded-full"
-                />
+              <Avatar className="w-20 h-20 border-2 ">
+                <AvatarImage src={user.image || "/avatar.png"} className="rounded-full" />
               </Avatar>
 
               <div className="mt-4 space-y-1">
