@@ -3,6 +3,7 @@ import { createComment, deletePost, getPosts, toggleLike } from "@/actions/post.
 import { useUser } from "@clerk/nextjs";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { Card, CardContent } from "./ui/card";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
@@ -63,7 +64,11 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
     }
   };
 
-  return <div>PostCard</div>;
+  return <Card className="overflow-hidden">
+    <CardContent className="p-4 s:p-6">
+
+    </CardContent>
+  </Card>;
 }
 
 export default PostCard;
