@@ -1,9 +1,16 @@
-import { createComment, deletePost, getPosts, toggleLike } from "@/actions/post.action";
+import {
+  createComment,
+  deletePost,
+  getPosts,
+  toggleLike,
+} from "@/actions/post.action";
 
 import { useUser } from "@clerk/nextjs";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Card, CardContent } from "./ui/card";
+import Link from "next/link";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
@@ -64,11 +71,19 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
     }
   };
 
-  return <Card className="overflow-hidden">
-    <CardContent className="p-4 s:p-6">
-
-    </CardContent>
-  </Card>;
+  return (
+    <Card className="overflow-hidden">
+      <CardContent className="p-4 s:p-6">
+        <div className="flex space-x-0 sm:space-x-4">
+          <Link href={`/profile/${post.author.username}`}>
+            <Avatar>
+              <AvatarImage src={post.author.image ?? "/avatar.png"} />
+            </Avatar>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default PostCard;
