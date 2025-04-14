@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createComment,
   deletePost,
@@ -11,6 +13,8 @@ import toast from "react-hot-toast";
 import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { formatDistanceToNow } from "date-fns";
+import { DeleteAlertDialog } from "./DeleteAlertDialog";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
@@ -77,9 +81,45 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
         <div className="flex space-x-0 sm:space-x-4">
           <Link href={`/profile/${post.author.username}`}>
             <Avatar>
-              <AvatarImage src={post.author.image ?? "/avatar.png"} />
+              <AvatarImage
+                src={post.author.image ?? "/avatar.png"}
+                className="rounded-full w-10 h-10"
+              />
             </Avatar>
           </Link>
+
+          {/* POST HEADER & TEXT CONTENT */}
+          <div className="flex-1 ">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 truncate">
+                <Link
+                  href={`/profile/${post.author.username}`}
+                  className="font-semibold truncate"
+                >
+                  {post.author.name}
+                </Link>
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <Link href={`/profile/${post.author.username}`}>
+                    @{post.author.username}
+                  </Link>
+                  <span>•</span>
+                  <span>
+                    {formatDistanceToNow(new Date(post.createdAt))} ago
+                  </span>
+                </div>
+              </div>
+              {/* Check if current user is the post author */}
+              {dbUserId === post.author.id && (
+                <DeleteAlertDialog
+                  isDeleting={isDeleting}
+                  onDelete={handleDeletePost}
+                />
+              )}
+            </div>
+            <p className="mt-2 text-sm text-foreground break-words">
+              {post.content}
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>
